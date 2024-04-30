@@ -3,22 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
-#include "Components/CombatComponent.h"
-
 #include "AnimNotifies/AnimNotify_PlayMontageNotify.h"
-
-#include "CombatAnimNotify_ResetCombo.generated.h"
+#include "CombatAnimNotify_Evade.generated.h"
 
 UCLASS()
-class COMBAT_API UCombatAnimNotify_ResetCombo : public UAnimNotify_PlayMontageNotify
+class COMBAT_API UCombatAnimNotify_Evade : public UAnimNotify_PlayMontageNotify
 {
 	GENERATED_BODY()
 	
 #pragma region Functions
 
 public:
-	UCombatAnimNotify_ResetCombo();
+	UCombatAnimNotify_Evade();
 
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
@@ -32,9 +28,7 @@ public:
 
 #pragma region Variables
 
-public:
-	UPROPERTY(EditAnywhere, Category = "+Combat")
-	TEnumAsByte<ECombat_AttackType> AttackType;
+
 
 #pragma endregion
 };

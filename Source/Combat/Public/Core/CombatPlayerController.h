@@ -16,6 +16,7 @@ class UEnhancedInputComponent;
 class UInputAction;
 class UInputMappingContext;
 
+DECLARE_DYNAMIC_DELEGATE(FOnEvade);
 DECLARE_DYNAMIC_DELEGATE(FOnBlock_Start);
 DECLARE_DYNAMIC_DELEGATE(FOnBlock_Hold);
 DECLARE_DYNAMIC_DELEGATE(FOnBlock_Stop);
@@ -54,11 +55,7 @@ protected:
 
 	virtual void Look(const FInputActionValue& Value);
 
-	virtual void Jump_Start(const FInputActionValue& Value);
-
-	virtual void Jump_Hold(const FInputActionValue& Value);
-
-	virtual void Jump_Stop(const FInputActionValue& Value);
+	virtual void Evade(const FInputActionValue& Value);
 	
 	virtual void Block_Start(const FInputActionValue& Value);
 
@@ -131,7 +128,7 @@ public:
 	UInputAction* LookAction;
 
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Input")
-	FCombat_InputActionAndType JumpAction;
+	UInputAction* EvadeAction;
 
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Input")
 	FCombat_InputActionAndType BlockAction;
@@ -151,6 +148,9 @@ public:
 
 
 	/* Delegates */
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Delegates|Evade")
+	FOnEvade OnEvade;
+
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Delegates|Block")
 	FOnBlock_Start OnBlock_Start;
 

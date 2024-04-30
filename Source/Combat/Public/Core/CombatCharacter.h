@@ -3,11 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Components/CombatComponent.h"
+
 #include "GameFramework/Character.h"
 #include "CombatCharacter.generated.h"
 
-class UCombatComponent;
 class UCombatCharacterData;
+
+UENUM(BlueprintType)
+enum ECombat_HandType : uint8
+{
+	Left	UMETA(DisplayName = "Left"),
+	Right	UMETA(DisplayName = "Right")
+};
 
 UCLASS()
 class COMBAT_API ACombatCharacter : public ACharacter
@@ -18,10 +27,42 @@ class COMBAT_API ACombatCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
 	UCombatComponent* CombatComponent;
 
+	/*Projectile Spawn Point Light Attack Left*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_LightAttack_Left;
+
+	/*Projectile Spawn Point Light Attack Right*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_LightAttack_Right;
+
+	/*Projectile Spawn Point Heavy Attack Left*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_HeavyAttack_Left;
+
+	/*Projectile Spawn Point Heavy Attack Right*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_HeavyAttack_Right;
+
+	/*Projectile Spawn Point Ability Left*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_Ability_Left;
+
+	/*Projectile Spawn Point Ability Right*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_Ability_Right;
+
+	/*Projectile Spawn Point Ultimate Ability Left*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_UltimateAbility_Left;
+
+	/*Projectile Spawn Point Ultimate Ability Right*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Character", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint_UltimateAbility_Right;
+
 public:
 	ACombatCharacter();
 
-	FORCEINLINE class UCombatComponent* GetCombatComponent() const { return CombatComponent; }
+	FORCEINLINE UCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
 protected:
 	virtual void OnConstruction(const FTransform& Transform) override;
@@ -33,6 +74,12 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable, Category = "+Combat|Character")
 	virtual void UpdateCharacterData(UCombatCharacterData* NewCharacterData);
+	
+	UFUNCTION(BlueprintCallable, Category = "+Combat|Character")
+	USceneComponent* GetProjectileSpawnPoint(TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_HandType> HandType);
+
+	UFUNCTION(BlueprintCallable, Category = "+Combat|Character")
+	virtual FHitResult GetHitResultFromLookAtRotation();
 
 #pragma endregion
 
@@ -40,7 +87,7 @@ public:
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Character|References")
-	UCombatCharacterData* CharacterData;
+	UCombatCharacterData* CharacterData = nullptr;
 
 #pragma endregion
 };

@@ -6,14 +6,22 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
+class ACombatPlayerController;
 class UCombatCharacterData;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayLightAttackAnimation);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayHeavyAttackAnimation);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayAbilityAnimation);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayUltimateAbilityAnimation);
 
 UENUM(BlueprintType)
 enum ECombat_AttackType : uint8
 {
 	None				UMETA(DisplayName = "NONE"),
 	LightAttack			UMETA(DisplayName = "LightAttack"),
-	HeavyAttack			UMETA(DisplayName = "HeavyAttack")
+	HeavyAttack			UMETA(DisplayName = "HeavyAttack"),
+	Ability				UMETA(DisplayName = "Ability"),
+	UltimateAbility		UMETA(DisplayName = "UltimateAbility")
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -61,7 +69,8 @@ public:
 	UFUNCTION()
 	void LightAttack_Stop();
 
-	void LightAttackAnimation();
+	UFUNCTION(BlueprintCallable, Category = "+Combat")
+	float LightAttackAnimation();
 
 	UFUNCTION()
 	void HeavyAttack_Start();
@@ -72,7 +81,8 @@ public:
 	UFUNCTION()
 	void HeavyAttack_Stop();
 
-	void HeavyAttackAnimation();
+	UFUNCTION(BlueprintCallable, Category = "+Combat")
+	float HeavyAttackAnimation();
 
 	UFUNCTION()
 	void Ability_Start();
@@ -83,7 +93,8 @@ public:
 	UFUNCTION()
 	void Ability_Stop();
 
-	void AbilityAnimation();
+	UFUNCTION(BlueprintCallable, Category = "+Combat")
+	float AbilityAnimation();
 
 	UFUNCTION()
 	void UltimateAbility_Start();
@@ -94,7 +105,8 @@ public:
 	UFUNCTION()
 	void UltimateAbility_Stop();
 
-	void UltimateAbilityAnimation();
+	UFUNCTION(BlueprintCallable, Category = "+Combat")
+	float UltimateAbilityAnimation();
 
 #pragma endregion
 
@@ -109,6 +121,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|References")
 	ACharacter* OwningCharacterRef = nullptr;
 
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|References")
+	ACombatPlayerController* PlayerControllerRef = nullptr;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat")
 	float AttackSpeed;
 
@@ -117,6 +132,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat")
 	bool bIsBlocking;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat")
+	bool bIsEvading;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat")
 	bool bIsStaggered;
@@ -130,6 +148,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|LightAttack")
 	int32 LightAttackCount;
 
+	UPROPERTY(BlueprintAssignable, Category = "+Combat|LightAttack")
+	FOnPlayLightAttackAnimation OnPlayLightAttackAnimation;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|HeavyAttack")
 	bool bIsPerformingHeavyAttack;
 
@@ -139,17 +160,26 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|HeavyAttack")
 	int32 HeavyAttackCount;
 
+	UPROPERTY(BlueprintAssignable, Category = "+Combat|HeavyAttack")
+	FOnPlayHeavyAttackAnimation OnPlayHeavyAttackAnimation;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Ability")
 	bool bIsAbilityBeingUsed;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Ability")
 	bool bIsAbilityOnCooldown;
 
+	UPROPERTY(BlueprintAssignable, Category = "+Combat|Ability")
+	FOnPlayAbilityAnimation OnPlayAbilityAnimation;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|UltimateAbility")
 	bool bIsUltimateAbilityBeingUsed;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|UltimateAbility")
 	bool bIsUltimateAbilityOnCooldown;
+
+	UPROPERTY(BlueprintAssignable, Category = "+Combat|UltimateAbility")
+	FOnPlayUltimateAbilityAnimation OnPlayUltimateAbilityAnimation;
 
 #pragma endregion
 };

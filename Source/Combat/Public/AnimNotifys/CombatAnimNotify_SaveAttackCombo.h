@@ -7,7 +7,6 @@
 #include "Components/CombatComponent.h"
 
 #include "AnimNotifies/AnimNotify_PlayMontageNotify.h"
-
 #include "CombatAnimNotify_SaveAttackCombo.generated.h"
 
 UCLASS()
@@ -20,7 +19,9 @@ class COMBAT_API UCombatAnimNotify_SaveAttackCombo : public UAnimNotify_PlayMont
 public:
 	UCombatAnimNotify_SaveAttackCombo();
 
-	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent);
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
 
 	virtual void BranchingPointNotify(FBranchingPointNotifyPayload& BranchingPointPayload) override;
 

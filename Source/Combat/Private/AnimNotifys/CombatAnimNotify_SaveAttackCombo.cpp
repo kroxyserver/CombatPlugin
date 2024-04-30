@@ -10,6 +10,7 @@ UCombatAnimNotify_SaveAttackCombo::UCombatAnimNotify_SaveAttackCombo()
 	NotifyName = "SpecifyAttackType...";
 }
 
+#if WITH_EDITOR
 void UCombatAnimNotify_SaveAttackCombo::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -29,6 +30,7 @@ void UCombatAnimNotify_SaveAttackCombo::PostEditChangeProperty(FPropertyChangedE
 			break;
 	}
 }
+#endif
 
 void UCombatAnimNotify_SaveAttackCombo::BranchingPointNotify(FBranchingPointNotifyPayload& BranchingPointPayload)
 {

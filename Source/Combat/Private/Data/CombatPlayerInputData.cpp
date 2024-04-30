@@ -15,8 +15,8 @@ UCombatPlayerInputData::UCombatPlayerInputData()
 	static ConstructorHelpers::FObjectFinder<UInputAction> LookActionAsset(TEXT("/Script/EnhancedInput.InputAction'/Combat/Input/IA_Combat_Look.IA_Combat_Look'"));
 	if (LookActionAsset.Succeeded()) LookAction = LookActionAsset.Object;
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> JumpActionAsset(TEXT("/Script/EnhancedInput.InputAction'/Combat/Input/IA_Combat_Jump.IA_Combat_Jump'"));
-	if (JumpActionAsset.Succeeded()) JumpAction.InputAction = JumpActionAsset.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> EvadeActionAsset(TEXT("/Script/EnhancedInput.InputAction'/Combat/Input/IA_Combat_Evade.IA_Combat_Evade'"));
+	if (EvadeActionAsset.Succeeded()) EvadeAction = EvadeActionAsset.Object;
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> BlockActionAsset(TEXT("/Script/EnhancedInput.InputAction'/Combat/Input/IA_Combat_Block.IA_Combat_Block'"));
 	if (BlockActionAsset.Succeeded()) BlockAction.InputAction = BlockActionAsset.Object;
@@ -33,7 +33,6 @@ UCombatPlayerInputData::UCombatPlayerInputData()
 	static ConstructorHelpers::FObjectFinder<UInputAction> UltimateAbilityActionAsset(TEXT("/Script/EnhancedInput.InputAction'/Combat/Input/IA_Combat_UltimateAbility.IA_Combat_UltimateAbility'"));
 	if (UltimateAbilityActionAsset.Succeeded()) UltimateAbilityAction.InputAction = UltimateAbilityActionAsset.Object;
 	
-	JumpAction.InputType = ECombat_InputType::PressAndRelease;
 	BlockAction.InputType = ECombat_InputType::PressHoldRelease;
 	LightAttackAction.InputType = ECombat_InputType::Press;
 	HeavyAttackAction.InputType = ECombat_InputType::Press;

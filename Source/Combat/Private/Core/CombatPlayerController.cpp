@@ -50,38 +50,8 @@ void ACombatPlayerController::SetupInputComponent()
 		// Look
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACombatPlayerController::Look);
 
-		// Jump
-		switch (JumpAction.InputType)
-		{
-			case Press:
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Jump_Start);
-				break;
-			case Hold:
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Jump_Hold);
-				break;
-			case Release:
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Jump_Stop);
-				break;
-			case PressAndHold:
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Jump_Start);
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Jump_Hold);
-				break;
-			case PressAndRelease:
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Jump_Start);
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Jump_Stop);
-				break;
-			case HoldAndRelease:
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Jump_Hold);
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Jump_Stop);
-				break;
-			case PressHoldRelease:
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Jump_Start);
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Jump_Hold);
-				EnhancedInputComponent->BindAction(JumpAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Jump_Stop);
-				break;
-			default:
-				break;
-		}
+		// Evade
+		EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Started, this, &ACombatPlayerController::Evade);
 
 		// Blocking
 		switch (BlockAction.InputType)
@@ -252,18 +222,20 @@ void ACombatPlayerController::SetupInputComponent()
 
 void ACombatPlayerController::Move(const FInputActionValue& Value)
 {
+	if (!GetCharacter()) return;
+
 	if (!bCanMove) return;
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	// find out which way is forward
+	// Find out which way is Forward
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-	// get forward vector
+	// Get Forward Vector
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-	// get right vector 
+	// Get Right Vector 
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	// add movement 
@@ -282,19 +254,9 @@ void ACombatPlayerController::Look(const FInputActionValue& Value)
 	AddPitchInput(LookAxisVector.Y * BaseTurnRate * UGameplayStatics::GetWorldDeltaSeconds(GetWorld()));
 }
 
-void ACombatPlayerController::Jump_Start(const FInputActionValue& Value)
+void ACombatPlayerController::Evade(const FInputActionValue& Value)
 {
-	GetCharacter()->Jump();
-}
-
-void ACombatPlayerController::Jump_Hold(const FInputActionValue& Value)
-{
-	// Define in child class if it's needed
-}
-
-void ACombatPlayerController::Jump_Stop(const FInputActionValue& Value)
-{
-	GetCharacter()->StopJumping();
+	OnEvade.ExecuteIfBound();
 }
 
 void ACombatPlayerController::Block_Start(const FInputActionValue& Value)
@@ -376,6 +338,7 @@ void ACombatPlayerController::BindInputToCombatComponent(UCombatComponent* Comba
 {
 	if (!CombatComponent) return;
 
+	OnEvade.BindUFunction(CombatComponent, "Evade");
 	OnBlock_Start.BindUFunction(CombatComponent, "Block_Start");
 	OnBlock_Hold.BindUFunction(CombatComponent, "Block_Hold");
 	OnBlock_Stop.BindUFunction(CombatComponent, "Block_Stop");
@@ -407,8 +370,7 @@ void ACombatPlayerController::UpdatePlayerInputData(UCombatPlayerInputData* NewP
 	if (CombatPlayerInputData->CombatPlayerInputMappingContext)		DefaultMappingContext = CombatPlayerInputData->CombatPlayerInputMappingContext;
 	if (CombatPlayerInputData->MoveAction)							MoveAction = CombatPlayerInputData->MoveAction;
 	if (CombatPlayerInputData->LookAction)							LookAction = CombatPlayerInputData->LookAction;
-
-	if (CombatPlayerInputData->JumpAction.IsValid())				JumpAction = CombatPlayerInputData->JumpAction;
+	if (CombatPlayerInputData->EvadeAction)							EvadeAction = CombatPlayerInputData->EvadeAction;
 	if (CombatPlayerInputData->BlockAction.IsValid())				BlockAction = CombatPlayerInputData->BlockAction;
 	if (CombatPlayerInputData->LightAttackAction.IsValid())			LightAttackAction = CombatPlayerInputData->LightAttackAction;
 	if (CombatPlayerInputData->HeavyAttackAction.IsValid())			HeavyAttackAction = CombatPlayerInputData->HeavyAttackAction;

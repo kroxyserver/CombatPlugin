@@ -52,11 +52,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "+Combat|PlayerInputData")
 	UInputAction* LookAction;
 
-
-
-
 	UPROPERTY(EditDefaultsOnly, Category = "+Combat|PlayerInputData")
-	FCombat_InputActionAndType JumpAction;
+	UInputAction* EvadeAction;
+
+
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "+Combat|PlayerInputData")
 	FCombat_InputActionAndType BlockAction;

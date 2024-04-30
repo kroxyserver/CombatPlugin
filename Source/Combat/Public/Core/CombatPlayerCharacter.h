@@ -37,7 +37,8 @@ protected:
 
 #pragma region Functions
 
-
+public:
+	virtual FHitResult GetHitResultFromLookAtRotation() override;
 
 #pragma endregion
 
@@ -46,7 +47,7 @@ protected:
 
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerCharacter|References")
-	ACombatPlayerController* PlayerControllerRef;
+	ACombatPlayerController* PlayerControllerRef = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|PlayerCharacter")
 	float MinTargetArmLength;

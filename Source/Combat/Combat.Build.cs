@@ -28,6 +28,7 @@ public class Combat : ModuleRules
 				"Core",
                 "EnhancedInput",
                 "AnimGraphRuntime",
+				"AIModule"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

@@ -2,9 +2,13 @@
 
 #include "Components/CombatComponent.h"
 
+#include "Core/CombatPlayerController.h"
 #include "Data/CombatCharacterData.h"
 
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "KismetAnimationLibrary.h"
 
 #define IsAnAbilityBeingUsed bIsAbilityBeingUsed || bIsUltimateAbilityBeingUsed
 
@@ -14,6 +18,7 @@ UCombatComponent::UCombatComponent()
 	AttackSpeed = 1.f;
 	bCanBlock = true;
 	bIsBlocking = false;
+	bIsEvading = false;
 	bIsStaggered = false;
 
 	bIsPerformingLightAttack = false;
@@ -38,6 +43,13 @@ void UCombatComponent::BeginPlay()
 
 	OwningCharacterRef = Cast<ACharacter>(GetOwner());
 	if (!OwningCharacterRef) GEngine->AddOnScreenDebugMessage(INDEX_NONE, 3.f, FColor::Red, "OwningCharacterRef invalid. CombatComponent.cpp, BeginPlay()");
+
+	PlayerControllerRef = Cast<ACombatPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!PlayerControllerRef) GEngine->AddOnScreenDebugMessage(INDEX_NONE, 3.f, FColor::Red, "PlayerControllerRef invalid. CombatComponent.cpp, BeginPlay(). The PlayerController specified in GameMode must be of type ACombatPlayerController.");
+
+	if (!OwningCharacterRef || !PlayerControllerRef) return;
+
+	PlayerControllerRef->BindInputToCombatComponent(this);
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -85,12 +97,45 @@ void UCombatComponent::ResetHeavyAttackCombo()
 
 void UCombatComponent::Evade()
 {
-	// TODO : Write evade code here
+	if (bIsEvading || IsAnAbilityBeingUsed) return;
+
+	// Don't Evade if character is not moving
+	if (OwningCharacterRef->GetVelocity() == FVector::ZeroVector) return;
+
+	if (bIsPerformingLightAttack || bIsPerformingHeavyAttack)
+	{
+		OwningCharacterRef->StopAnimMontage();
+		ResetLightAttackCombo();
+		ResetHeavyAttackCombo();
+	}
+
+	//  Get Movement Direction
+	float DirectionAngle = UKismetAnimationLibrary::CalculateDirection(OwningCharacterRef->GetVelocity(), OwningCharacterRef->GetActorRotation());
+
+	// Set is evading
+	bIsEvading = true;
+
+	// Play Evade Montage in that direction
+	float AnimDuration = OwningCharacterRef->PlayAnimMontage(	
+		(DirectionAngle < 45.f && DirectionAngle > -45.f) ? CharacterData->EvadeForwardMontage
+		: (DirectionAngle <= -45.f && DirectionAngle >= -135.f) ? CharacterData->EvadeLeftMontage
+		: (DirectionAngle <= 135.f && DirectionAngle >= 45.f) ? CharacterData->EvadeRightMontage
+		: /*(DirectionAngle < -135.f && DirectionAngle > 135.f)*/ CharacterData->EvadeBackwardMontage
+	);
+
+	// Set is not evading after evade montage duration
+	FTimerHandle TimerHandle_EvadeDuration;
+	GetWorld()->GetTimerManager().SetTimer(
+		TimerHandle_EvadeDuration,
+		[this]() { bIsEvading = false; },
+		AnimDuration,
+		false
+	);
 }
 
 void UCombatComponent::Block_Start()
 {
-	if (!bCanBlock) return;
+	if (!bCanBlock || bIsEvading) return;
 
 	if (bIsPerformingLightAttack || bIsPerformingHeavyAttack)
 	{
@@ -105,18 +150,18 @@ void UCombatComponent::Block_Start()
 
 void UCombatComponent::Block_Hold()
 {
-	if (!bCanBlock) return;
+	if (!bCanBlock || bIsEvading) return;
 }
 
 void UCombatComponent::Block_Stop()
 {
-	if (!bCanBlock) return;
+	if (!bCanBlock || bIsEvading) return;
 	bIsBlocking = false;
 }
 
 void UCombatComponent::LightAttack_Start()
 {
-	if (bSaveHeavyAttack || bIsBlocking || bIsStaggered || IsAnAbilityBeingUsed) return;
+	if (bSaveHeavyAttack || bIsBlocking || bIsEvading || bIsStaggered || IsAnAbilityBeingUsed) return;
 
 	if (bIsPerformingLightAttack || bIsPerformingHeavyAttack)
 	{
@@ -137,16 +182,25 @@ void UCombatComponent::LightAttack_Stop()
 {
 }
 
-void UCombatComponent::LightAttackAnimation()
+float UCombatComponent::LightAttackAnimation()
 {
-	if (CharacterData->LightAttackMontages.IsValidIndex(LightAttackCount)) OwningCharacterRef->PlayAnimMontage(CharacterData->LightAttackMontages[LightAttackCount], AttackSpeed);
+	float AnimDuration = 0.f;
+
+	if (CharacterData->LightAttackMontages.IsValidIndex(LightAttackCount))
+	{
+		AnimDuration = OwningCharacterRef->PlayAnimMontage(CharacterData->LightAttackMontages[LightAttackCount], AttackSpeed);
+
+		OnPlayLightAttackAnimation.Broadcast();
+	}
 
 	if (++LightAttackCount >= CharacterData->LightAttackMontages.Num()) LightAttackCount = 0;
+
+	return AnimDuration;
 }
 
 void UCombatComponent::HeavyAttack_Start()
 {
-	if (bSaveLightAttack || bIsBlocking || bIsStaggered || IsAnAbilityBeingUsed) return;
+	if (bSaveLightAttack || bIsBlocking || bIsEvading || bIsStaggered || IsAnAbilityBeingUsed) return;
 
 	if (bIsPerformingLightAttack || bIsPerformingHeavyAttack)
 	{
@@ -167,16 +221,25 @@ void UCombatComponent::HeavyAttack_Stop()
 {
 }
 
-void UCombatComponent::HeavyAttackAnimation()
+float UCombatComponent::HeavyAttackAnimation()
 {
-	if (CharacterData->HeavyAttackMontages.IsValidIndex(HeavyAttackCount)) OwningCharacterRef->PlayAnimMontage(CharacterData->HeavyAttackMontages[HeavyAttackCount], AttackSpeed);
+	float AnimDuration = 0.f;
+
+	if (CharacterData->HeavyAttackMontages.IsValidIndex(HeavyAttackCount))
+	{
+		AnimDuration = OwningCharacterRef->PlayAnimMontage(CharacterData->HeavyAttackMontages[HeavyAttackCount], AttackSpeed);
+
+		OnPlayHeavyAttackAnimation.Broadcast();
+	}
 
 	if (++HeavyAttackCount >= CharacterData->HeavyAttackMontages.Num()) HeavyAttackCount = 0;
+
+	return AnimDuration;
 }
 
 void UCombatComponent::Ability_Start()
 {
-	if (bIsStaggered || bIsAbilityOnCooldown || IsAnAbilityBeingUsed) return;
+	if (bIsEvading || bIsStaggered || bIsAbilityOnCooldown || IsAnAbilityBeingUsed) return;
 
 	AbilityAnimation();
 }
@@ -189,13 +252,17 @@ void UCombatComponent::Ability_Stop()
 {
 }
 
-void UCombatComponent::AbilityAnimation()
+float UCombatComponent::AbilityAnimation()
 {
+	float AnimDuration = 0.f;
+
 	if (CharacterData->AbilityMontage)
 	{
 		bIsAbilityBeingUsed = true;
 
-		float AnimDuration = OwningCharacterRef->PlayAnimMontage(CharacterData->AbilityMontage, 1.f);
+		AnimDuration = OwningCharacterRef->PlayAnimMontage(CharacterData->AbilityMontage, 1.f);
+
+		OnPlayAbilityAnimation.Broadcast();
 
 		FTimerHandle TimerHandle_AbilityDuration;
 		GetWorld()->GetTimerManager().SetTimer(
@@ -205,11 +272,13 @@ void UCombatComponent::AbilityAnimation()
 			false
 		);
 	}
+
+	return AnimDuration;
 }
 
 void UCombatComponent::UltimateAbility_Start()
 {
-	if (bIsStaggered || bIsUltimateAbilityOnCooldown || IsAnAbilityBeingUsed) return;
+	if (bIsEvading || bIsStaggered || bIsUltimateAbilityOnCooldown || IsAnAbilityBeingUsed) return;
 
 	UltimateAbilityAnimation();
 }
@@ -222,13 +291,17 @@ void UCombatComponent::UltimateAbility_Stop()
 {
 }
 
-void UCombatComponent::UltimateAbilityAnimation()
+float UCombatComponent::UltimateAbilityAnimation()
 {
+	float AnimDuration = 0.f;
+
 	if (CharacterData->UltimateAbilityMontage)
 	{
 		bIsUltimateAbilityBeingUsed = true;
 
-		float AnimDuration = OwningCharacterRef->PlayAnimMontage(CharacterData->UltimateAbilityMontage, 1.f);
+		AnimDuration = OwningCharacterRef->PlayAnimMontage(CharacterData->UltimateAbilityMontage, 1.f);
+
+		OnPlayUltimateAbilityAnimation.Broadcast();
 
 		FTimerHandle TimerHandle_UltimateAbilityDuration;
 		GetWorld()->GetTimerManager().SetTimer(
@@ -238,4 +311,6 @@ void UCombatComponent::UltimateAbilityAnimation()
 			false
 		);
 	}
+
+	return AnimDuration;
 }
