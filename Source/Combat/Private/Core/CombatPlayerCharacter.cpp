@@ -39,11 +39,11 @@ void ACombatPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (IsPlayerControlled())
-	{
-		PlayerControllerRef = Cast<ACombatPlayerController>(Controller);
-		if (!PlayerControllerRef) GEngine->AddOnScreenDebugMessage(INDEX_NONE, 3.f, FColor::Red, "PlayerControllerRef Invalid. BeginPlay() CombatPlayerCharacter.cpp");
-	}
+	PlayerControllerRef = Cast<ACombatPlayerController>(Controller);
+	if (!PlayerControllerRef) GEngine->AddOnScreenDebugMessage(INDEX_NONE, 3.f, FColor::Red, "PlayerControllerRef Invalid. BeginPlay() CombatPlayerCharacter.cpp");
+
+	PlayerControllerRef->BindInputToCombatComponent(GetCombatComponent());
+	//GetCombatComponent()->SetCanMove.AddDynamic(PlayerControllerRef, &ACombatPlayerController::EnableMovement);
 }
 
 FHitResult ACombatPlayerCharacter::GetHitResultFromLookAtRotation()

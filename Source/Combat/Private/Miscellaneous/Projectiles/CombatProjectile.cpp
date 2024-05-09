@@ -15,6 +15,7 @@ ACombatProjectile::ACombatProjectile()
 	InitialProjectileSpeed = 3000.f;
 	MaxProjectileSpeed = 3000.f;
 	ProjectileSpeed = 3000.f;
+	ProjectileDamage = 1.f;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -64,8 +65,24 @@ void ACombatProjectile::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedC
 	{
 		if (OtherActor == GetOwner() || Cast<ACombatProjectile>(OtherActor)) return;
 
+		ApplyDamage(SweepResult);
 		SpawnHitEffect(SweepResult);
 	}
+}
+
+void ACombatProjectile::ApplyDamage_Implementation(FHitResult HitResult)
+{
+	if (HitEffect == nullptr || HitResult.GetActor() == this || HitResult.GetActor() == GetOwner()) return;
+
+	UGameplayStatics::ApplyPointDamage(
+		HitResult.GetActor(),
+		ProjectileDamage,
+		-HitResult.ImpactNormal,
+		HitResult,
+		GetOwner()->GetInstigatorController(),
+		GetOwner(),
+		UDamageType::StaticClass()
+	);
 }
 
 void ACombatProjectile::LaunchProjectile_Implementation()

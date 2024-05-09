@@ -8,15 +8,19 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+constexpr auto ProjectileSpawnPointSocketName_LightAttack = "ProjectileSpawnPoint_LightAttack";
 constexpr auto ProjectileSpawnPointSocketName_LightAttack_Left = "ProjectileSpawnPoint_LightAttack_Left";
 constexpr auto ProjectileSpawnPointSocketName_LightAttack_Right = "ProjectileSpawnPoint_LightAttack_Right";
 
+constexpr auto ProjectileSpawnPointSocketName_HeavyAttack = "ProjectileSpawnPoint_HeavyAttack";
 constexpr auto ProjectileSpawnPointSocketName_HeavyAttack_Left = "ProjectileSpawnPoint_HeavyAttack_Left";
 constexpr auto ProjectileSpawnPointSocketName_HeavyAttack_Right = "ProjectileSpawnPoint_HeavyAttack_Right";
 
+constexpr auto ProjectileSpawnPointSocketName_Ability = "ProjectileSpawnPoint_Ability";
 constexpr auto ProjectileSpawnPointSocketName_Ability_Left = "ProjectileSpawnPoint_Ability_Left";
 constexpr auto ProjectileSpawnPointSocketName_Ability_Right = "ProjectileSpawnPoint_Ability_Right";
 
+constexpr auto ProjectileSpawnPointSocketName_UltimateAbility = "ProjectileSpawnPoint_UltimateAbility";
 constexpr auto ProjectileSpawnPointSocketName_UltimateAbility_Left = "ProjectileSpawnPoint_UltimateAbility_Left";
 constexpr auto ProjectileSpawnPointSocketName_UltimateAbility_Right = "ProjectileSpawnPoint_UltimateAbility_Right";
 
@@ -40,9 +44,15 @@ ACombatCharacter::ACombatCharacter()
 	GetCharacterMovement()->MaxWalkSpeedCrouched = 200.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+	GetCharacterMovement()->bCanWalkOffLedges = false;
+	GetCharacterMovement()->bCanWalkOffLedgesWhenCrouching = false;
 
 	// Combat Component
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+
+	// Projectile Spawn Point Light Attack
+	ProjectileSpawnPoint_LightAttack = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_LightAttack"));
+	ProjectileSpawnPoint_LightAttack->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_LightAttack);
 
 	// Projectile Spawn Point Light Attack Left
 	ProjectileSpawnPoint_LightAttack_Left = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_LightAttack_Left"));
@@ -52,6 +62,10 @@ ACombatCharacter::ACombatCharacter()
 	ProjectileSpawnPoint_LightAttack_Right = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_LightAttack_Right"));
 	ProjectileSpawnPoint_LightAttack_Right->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_LightAttack_Right);
 
+	// Projectile Spawn Point Heavy Attack
+	ProjectileSpawnPoint_HeavyAttack = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_HeavyAttack"));
+	ProjectileSpawnPoint_HeavyAttack->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_HeavyAttack);
+
 	// Projectile Spawn Point Heavy Attack Left
 	ProjectileSpawnPoint_HeavyAttack_Left = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_HeavyAttack_Left"));
 	ProjectileSpawnPoint_HeavyAttack_Left->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_HeavyAttack_Left);
@@ -60,6 +74,10 @@ ACombatCharacter::ACombatCharacter()
 	ProjectileSpawnPoint_HeavyAttack_Right = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_HeavyAttack_Right"));
 	ProjectileSpawnPoint_HeavyAttack_Right->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_HeavyAttack_Right);
 
+	// Projectile Spawn Point Ability
+	ProjectileSpawnPoint_Ability = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_Ability"));
+	ProjectileSpawnPoint_Ability->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_Ability);
+
 	// Projectile Spawn Point Ability Left
 	ProjectileSpawnPoint_Ability_Left = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_Ability_Left"));
 	ProjectileSpawnPoint_Ability_Left->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_Ability_Left);
@@ -67,6 +85,10 @@ ACombatCharacter::ACombatCharacter()
 	// Projectile Spawn Point Ability Right
 	ProjectileSpawnPoint_Ability_Right = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_Ability_Right"));
 	ProjectileSpawnPoint_Ability_Right->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_Ability_Right);
+
+	// Projectile Spawn Point Ultimate Ability
+	ProjectileSpawnPoint_UltimateAbility = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_UltimateAbility"));
+	ProjectileSpawnPoint_UltimateAbility->SetupAttachment(GetMesh(), ProjectileSpawnPointSocketName_UltimateAbility);
 
 	// Projectile Spawn Point Ultimate Ability Left
 	ProjectileSpawnPoint_UltimateAbility_Left = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint_UltimateAbility_Left"));
@@ -87,8 +109,6 @@ void ACombatCharacter::OnConstruction(const FTransform& Transform)
 void ACombatCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//if (CharacterData) UpdateCharacterData(CharacterData);
 }
 
 void ACombatCharacter::UpdateCharacterData(UCombatCharacterData* NewCharacterData)
@@ -107,23 +127,23 @@ void ACombatCharacter::UpdateCharacterData(UCombatCharacterData* NewCharacterDat
 	CombatComponent->CharacterData = NewCharacterData;
 }
 
-USceneComponent* ACombatCharacter::GetProjectileSpawnPoint(TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_HandType> HandType)
+USceneComponent* ACombatCharacter::GetProjectileSpawnPoint(TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType)
 {
 	switch (AttackType)
 	{
 		case None:
 			break;
 		case LightAttack:
-			return (HandType == Left) ? ProjectileSpawnPoint_LightAttack_Left : ProjectileSpawnPoint_LightAttack_Right;
+			return (HandType == Default) ? ProjectileSpawnPoint_LightAttack : (HandType == Left) ? ProjectileSpawnPoint_LightAttack_Left : ProjectileSpawnPoint_LightAttack_Right;
 			break;
 		case HeavyAttack:
-			return (HandType == Left) ? ProjectileSpawnPoint_HeavyAttack_Left : ProjectileSpawnPoint_HeavyAttack_Right;
+			return (HandType == Default) ? ProjectileSpawnPoint_HeavyAttack : (HandType == Left) ? ProjectileSpawnPoint_HeavyAttack_Left : ProjectileSpawnPoint_HeavyAttack_Right;
 			break;
 		case Ability:
-			return (HandType == Left) ? ProjectileSpawnPoint_Ability_Left : ProjectileSpawnPoint_Ability_Right;
+			return (HandType == Default) ? ProjectileSpawnPoint_Ability : (HandType == Left) ? ProjectileSpawnPoint_Ability_Left : ProjectileSpawnPoint_Ability_Right;
 			break;
 		case UltimateAbility:
-			return (HandType == Left) ? ProjectileSpawnPoint_UltimateAbility_Left : ProjectileSpawnPoint_UltimateAbility_Right;
+			return (HandType == Default) ? ProjectileSpawnPoint_UltimateAbility : (HandType == Left) ? ProjectileSpawnPoint_UltimateAbility_Left : ProjectileSpawnPoint_UltimateAbility_Right;
 			break;
 		default:
 			break;

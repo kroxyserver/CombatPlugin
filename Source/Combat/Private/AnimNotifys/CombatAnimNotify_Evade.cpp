@@ -2,6 +2,7 @@
 
 #include "AnimNotifys/CombatAnimNotify_Evade.h"
 
+#include "Components/CombatComponent.h"
 #include "Core/CombatCharacter.h"
 #include "Data/CombatCharacterData.h"
 
@@ -32,4 +33,6 @@ void UCombatAnimNotify_Evade::BranchingPointNotify(FBranchingPointNotifyPayload&
 	FVector LaunchVelocity = UKismetMathLibrary::Multiply_VectorFloat(NormalizedVelocity, CombatCharacter->CharacterData->EvadeLaunchVelocityPower);
 
 	CombatCharacter->LaunchCharacter(LaunchVelocity, true, true);
+
+	//CombatCharacter->GetCombatComponent()->SetCanMove.Broadcast(false);
 }

@@ -9,6 +9,7 @@
 class ACombatPlayerController;
 class UCombatCharacterData;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetCanMove, bool, bTrue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayLightAttackAnimation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayHeavyAttackAnimation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayAbilityAnimation);
@@ -48,6 +49,8 @@ public:
 
 	void ResetHeavyAttackCombo();
 
+	void SetIsEvading(bool bTrue);
+
 	UFUNCTION()
 	void Evade();
 
@@ -70,7 +73,7 @@ public:
 	void LightAttack_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float LightAttackAnimation();
+	float LightAttackAnimation(FName SectionName = NAME_None);
 
 	UFUNCTION()
 	void HeavyAttack_Start();
@@ -82,7 +85,7 @@ public:
 	void HeavyAttack_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float HeavyAttackAnimation();
+	float HeavyAttackAnimation(FName SectionName = NAME_None);
 
 	UFUNCTION()
 	void Ability_Start();
@@ -94,7 +97,7 @@ public:
 	void Ability_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float AbilityAnimation();
+	float AbilityAnimation(FName SectionName = NAME_None);
 
 	UFUNCTION()
 	void UltimateAbility_Start();
@@ -106,7 +109,12 @@ public:
 	void UltimateAbility_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float UltimateAbilityAnimation();
+	float UltimateAbilityAnimation(FName SectionName = NAME_None);
+
+	/*All probabilities should be between 0 and 1*/
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	ECombat_AttackType GetRandomAttackType(float LightAttackProbability, float HeavyAttackProbability, float AbilityProbability, float UltimateAbilityProbability) const;
+
 
 #pragma endregion
 
@@ -121,8 +129,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|References")
 	ACharacter* OwningCharacterRef = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Category = "+Combat|References")
-	ACombatPlayerController* PlayerControllerRef = nullptr;
+	UPROPERTY(BlueprintAssignable, Category = "+Combat")
+	FSetCanMove SetCanMove;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat")
 	float AttackSpeed;
@@ -169,6 +177,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|Ability")
 	bool bIsAbilityOnCooldown;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Ability")
+	float AbilityCooldown;
+
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|Ability")
+	FTimerHandle TimerHandle_AbilityCooldown;
+
 	UPROPERTY(BlueprintAssignable, Category = "+Combat|Ability")
 	FOnPlayAbilityAnimation OnPlayAbilityAnimation;
 
@@ -177,6 +191,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|UltimateAbility")
 	bool bIsUltimateAbilityOnCooldown;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|UltimateAbility")
+	float UltimateAbilityCooldown;
+
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|UltimateAbility")
+	FTimerHandle TimerHandle_UltimateAbilityCooldown;
 
 	UPROPERTY(BlueprintAssignable, Category = "+Combat|UltimateAbility")
 	FOnPlayUltimateAbilityAnimation OnPlayUltimateAbilityAnimation;
