@@ -13,7 +13,9 @@ ACombatAICharacter::ACombatAICharacter()
 	CurrentPhase = PhaseOne;
 	LastPhase = PhaseOne;
 
+	// Character Movement
 	GetCharacterMovement()->bRequestedMoveUseAcceleration = true;
+	//GetCharacterMovement()->bUseAccelerationForPathFollowing = true; // can only be set in blueprints so make sure to enable this boolean
 }
 
 void ACombatAICharacter::OnConstruction(const FTransform& Transform)

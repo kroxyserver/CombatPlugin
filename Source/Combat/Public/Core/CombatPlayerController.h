@@ -198,7 +198,7 @@ public:
 
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|PlayerController")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "+Combat|PlayerController")
 	uint8 bCanMove : 1;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "+Combat|PlayerController")

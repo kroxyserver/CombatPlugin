@@ -60,6 +60,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "+Combat|Projectile")
 	void SpawnHitEffect(FHitResult HitResult);
 
+	UFUNCTION(BlueprintNativeEvent, Category = "+Combat|Projectile")
+	void ApplyDamage(FHitResult HitResult);
+
 #pragma endregion
 
 #pragma region Variables
@@ -76,6 +79,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Projectile")
 	float ProjectileSpeed;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Projectile")
+	float ProjectileDamage;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Projectile")
 	UParticleSystem* HitEffect = nullptr;

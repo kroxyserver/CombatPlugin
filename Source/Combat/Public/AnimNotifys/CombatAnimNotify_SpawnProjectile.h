@@ -49,7 +49,7 @@ public:
 	TEnumAsByte<ECombat_AttackType> AttackType;
 
 	UPROPERTY(EditAnywhere, Category = "+Combat")
-	TEnumAsByte<ECombat_HandType> HandType;
+	TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType;
 
 #pragma endregion
 };

@@ -13,7 +13,7 @@ UCombatAnimNotify_SpawnProjectile::UCombatAnimNotify_SpawnProjectile()
 	NotifyName = "Specify Attack Type";
 	ProjectileClass = ACombatProjectile::StaticClass();
 	AttackType = ECombat_AttackType::None;
-	HandType = ECombat_HandType::Left;
+	HandType = ECombat_ProjectileSpawnPointType::Default;
 }
 
 #if WITH_EDITOR
@@ -27,16 +27,16 @@ void UCombatAnimNotify_SpawnProjectile::PostEditChangeProperty(FPropertyChangedE
 			NotifyName = "Specify Attack Type";
 			break;
 		case LightAttack:
-			NotifyName = (HandType == Left) ? "Spawn Projectile Light Attack Left" : "Spawn Projectile Light Attack Right";
+			NotifyName = (HandType == Default) ? "Spawn Projectile Light Attack" : (HandType == Left) ? "Spawn Projectile Light Attack Left" : "Spawn Projectile Light Attack Right";
 			break;
 		case HeavyAttack:
-			NotifyName = (HandType == Left) ? "Spawn Projectile Heavy Attack Left" : "Spawn Projectile Heavy Attack Right";
+			NotifyName = (HandType == Default) ? "Spawn Projectile Heavy Attack" : (HandType == Left) ? "Spawn Projectile Heavy Attack Left" : "Spawn Projectile Heavy Attack Right";
 			break;
 		case Ability:
-			NotifyName = (HandType == Left) ? "Spawn Projectile Ability Left" : "Spawn Projectile Ability Right";
+			NotifyName = (HandType == Default) ? "Spawn Projectile Ability" : (HandType == Left) ? "Spawn Projectile Ability Left" : "Spawn Projectile Ability Right";
 			break;
 		case UltimateAbility:
-			NotifyName = (HandType == Left) ? "Spawn Projectile Ultimate Ability Left" : "Spawn Projectile Ultimate Ability Right";
+			NotifyName = (HandType == Default) ? "Spawn Projectile Ultimate Ability" : (HandType == Left) ? "Spawn Projectile Ultimate Ability Left" : "Spawn Projectile Ultimate Ability Right";
 			break;
 		default:
 			break;

@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Animation")
 	TSubclassOf<UAnimInstance> AnimationBlueprintClass;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Animation")
+	UAnimMontage* SpawnMontage;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Animation|Evade")
 	UAnimMontage* EvadeForwardMontage;
 

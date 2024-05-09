@@ -11,7 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
-void UCombatSubsystem::SpawnProjectile(ACombatCharacter* CombatCharacter, TSubclassOf<AActor> ProjectileClass, TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_HandType> HandType)
+void UCombatSubsystem::SpawnProjectile(ACombatCharacter* CombatCharacter, TSubclassOf<AActor> ProjectileClass, TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType)
 {
 	FTransform SpawnTransform = FTransform();
 	ACombatProjectile_Homing* HomingProjectile;
