@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Kunal Patil (kroxyserver). All Rights Reserved.
 
 using UnrealBuildTool;
 

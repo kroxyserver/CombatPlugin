@@ -40,7 +40,7 @@ ACombatCharacter::ACombatCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 350.f, 0.f);
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 360.f;
+	//GetCharacterMovement()->MaxWalkSpeed = 360.f;
 	GetCharacterMovement()->MaxWalkSpeedCrouched = 200.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
@@ -117,6 +117,9 @@ void ACombatCharacter::UpdateCharacterData(UCombatCharacterData* NewCharacterDat
 
 	// Capsules
 	GetCapsuleComponent()->InitCapsuleSize(NewCharacterData->CapsuleRadius, NewCharacterData->CapsuleHalfHeight);
+
+	// Movement
+	GetCharacterMovement()->MaxWalkSpeed = NewCharacterData->WalkSpeed;
 
 	// Mesh
 	if (NewCharacterData->Mesh) GetMesh()->SetSkeletalMeshAsset(NewCharacterData->Mesh);

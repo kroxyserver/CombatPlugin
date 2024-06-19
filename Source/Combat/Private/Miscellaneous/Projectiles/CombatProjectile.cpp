@@ -23,9 +23,9 @@ ACombatProjectile::ACombatProjectile()
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	RootComponent = CollisionComponent;
 	CollisionComponent->InitSphereRadius(5.f);
-	CollisionComponent->SetCollisionProfileName("OverlapAllDynamic");
+	CollisionComponent->SetCollisionProfileName("Projectile");
+	//CollisionComponent->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel1); // Projectile
 	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ACombatProjectile::OnComponentBeginOverlap);
-
 
 	// Projectile Movement Component
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));

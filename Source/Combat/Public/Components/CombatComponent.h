@@ -55,6 +55,15 @@ public:
 	void Evade();
 
 	UFUNCTION()
+	void Sprint_Start();
+
+	UFUNCTION()
+	void Sprint_Hold();
+
+	UFUNCTION()
+	void Sprint_Stop();
+
+	UFUNCTION()
 	void Block_Start();
 
 	UFUNCTION()
@@ -73,7 +82,7 @@ public:
 	void LightAttack_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float LightAttackAnimation(FName SectionName = NAME_None);
+	float LightAttackAnimation();
 
 	UFUNCTION()
 	void HeavyAttack_Start();
@@ -85,7 +94,7 @@ public:
 	void HeavyAttack_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float HeavyAttackAnimation(FName SectionName = NAME_None);
+	float HeavyAttackAnimation();
 
 	UFUNCTION()
 	void Ability_Start();
@@ -97,7 +106,7 @@ public:
 	void Ability_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float AbilityAnimation(FName SectionName = NAME_None);
+	float AbilityAnimation();
 
 	UFUNCTION()
 	void UltimateAbility_Start();
@@ -109,12 +118,15 @@ public:
 	void UltimateAbility_Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat")
-	float UltimateAbilityAnimation(FName SectionName = NAME_None);
+	float UltimateAbilityAnimation();
 
 	/*All probabilities should be between 0 and 1*/
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 	ECombat_AttackType GetRandomAttackType(float LightAttackProbability, float HeavyAttackProbability, float AbilityProbability, float UltimateAbilityProbability) const;
 
+	/*Rotate Owning Characters towards Controller Rotation*/
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void RotateTowardsControllerRotation();
 
 #pragma endregion
 
@@ -180,7 +192,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Ability")
 	float AbilityCooldown;
 
-	UPROPERTY(BlueprintReadOnly, Category = "+Combat|Ability")
+	UPROPERTY(BlueprintReadWrite, Category = "+Combat|Ability")
 	FTimerHandle TimerHandle_AbilityCooldown;
 
 	UPROPERTY(BlueprintAssignable, Category = "+Combat|Ability")
@@ -195,7 +207,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|UltimateAbility")
 	float UltimateAbilityCooldown;
 
-	UPROPERTY(BlueprintReadOnly, Category = "+Combat|UltimateAbility")
+	UPROPERTY(BlueprintReadWrite, Category = "+Combat|UltimateAbility")
 	FTimerHandle TimerHandle_UltimateAbilityCooldown;
 
 	UPROPERTY(BlueprintAssignable, Category = "+Combat|UltimateAbility")

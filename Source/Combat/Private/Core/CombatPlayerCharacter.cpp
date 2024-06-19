@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ACombatPlayerCharacter::ACombatPlayerCharacter()
 {
@@ -56,7 +57,7 @@ FHitResult ACombatPlayerCharacter::GetHitResultFromLookAtRotation()
 		GetWorld(),
 		StartLocation,
 		EndLocation,
-		UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Camera),
+		UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel1), // Projectile Profile
 		true,
 		{},
 		EDrawDebugTrace::None,

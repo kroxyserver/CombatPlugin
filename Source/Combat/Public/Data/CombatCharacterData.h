@@ -16,10 +16,16 @@ public:
 	float EvadeLaunchVelocityPower = 2000.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Capsule")
-	float CapsuleHalfHeight;
+	float CapsuleHalfHeight = 90.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Capsule")
-	float CapsuleRadius;
+	float CapsuleRadius = 30.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Movement")
+	float WalkSpeed = 250.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Movement")
+	float SprintSpeed = 500.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|CharacterData|Mesh")
 	USkeletalMesh* Mesh;

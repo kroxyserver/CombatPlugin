@@ -59,6 +59,9 @@ public:
 
 
 	UPROPERTY(EditDefaultsOnly, Category = "+Combat|PlayerInputData")
+	FCombat_InputActionAndType SprintAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "+Combat|PlayerInputData")
 	FCombat_InputActionAndType BlockAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "+Combat|PlayerInputData")
