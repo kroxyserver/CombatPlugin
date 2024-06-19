@@ -11,10 +11,10 @@ class COMBAT_API UCombatAnimNotify_Evade : public UAnimNotify_PlayMontageNotify
 {
 	GENERATED_BODY()
 	
-#pragma region Functions
-
 public:
 	UCombatAnimNotify_Evade();
+
+#pragma region Functions
 
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;

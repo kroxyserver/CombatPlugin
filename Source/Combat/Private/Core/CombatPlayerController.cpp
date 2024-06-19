@@ -53,6 +53,39 @@ void ACombatPlayerController::SetupInputComponent()
 		// Evade
 		EnhancedInputComponent->BindAction(EvadeAction, ETriggerEvent::Started, this, &ACombatPlayerController::Evade);
 
+		// Sprinting
+		switch (SprintAction.InputType)
+		{
+			case Press:
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
+				break;
+			case Hold:
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Hold);
+				break;
+			case Release:
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
+				break;
+			case PressAndHold:
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Hold);
+				break;
+			case PressAndRelease:
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
+				break;
+			case HoldAndRelease:
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Hold);
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
+				break;
+			case PressHoldRelease:
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Hold);
+				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
+				break;
+			default:
+				break;
+		}
+
 		// Blocking
 		switch (BlockAction.InputType)
 		{
@@ -259,6 +292,21 @@ void ACombatPlayerController::Evade(const FInputActionValue& Value)
 	OnEvade.ExecuteIfBound();
 }
 
+void ACombatPlayerController::Sprint_Start(const FInputActionValue& Value)
+{
+	OnSprint_Start.ExecuteIfBound();
+}
+
+void ACombatPlayerController::Sprint_Hold(const FInputActionValue& Value)
+{
+	OnSprint_Hold.ExecuteIfBound();
+}
+
+void ACombatPlayerController::Sprint_Stop(const FInputActionValue& Value)
+{
+	OnSprint_Stop.ExecuteIfBound();
+}
+
 void ACombatPlayerController::Block_Start(const FInputActionValue& Value)
 {
 	OnBlock_Start.ExecuteIfBound();
@@ -339,6 +387,9 @@ void ACombatPlayerController::BindInputToCombatComponent(UCombatComponent* Comba
 	if (!CombatComponent) return;
 
 	OnEvade.BindUFunction(CombatComponent, "Evade");
+	OnSprint_Start.BindUFunction(CombatComponent, "Sprint_Start");
+	OnSprint_Hold.BindUFunction(CombatComponent, "Sprint_Hold");
+	OnSprint_Stop.BindUFunction(CombatComponent, "Sprint_Stop");
 	OnBlock_Start.BindUFunction(CombatComponent, "Block_Start");
 	OnBlock_Hold.BindUFunction(CombatComponent, "Block_Hold");
 	OnBlock_Stop.BindUFunction(CombatComponent, "Block_Stop");
@@ -371,6 +422,7 @@ void ACombatPlayerController::UpdatePlayerInputData(UCombatPlayerInputData* NewP
 	if (CombatPlayerInputData->MoveAction)							MoveAction = CombatPlayerInputData->MoveAction;
 	if (CombatPlayerInputData->LookAction)							LookAction = CombatPlayerInputData->LookAction;
 	if (CombatPlayerInputData->EvadeAction)							EvadeAction = CombatPlayerInputData->EvadeAction;
+	if (CombatPlayerInputData->SprintAction.IsValid())				SprintAction = CombatPlayerInputData->SprintAction;
 	if (CombatPlayerInputData->BlockAction.IsValid())				BlockAction = CombatPlayerInputData->BlockAction;
 	if (CombatPlayerInputData->LightAttackAction.IsValid())			LightAttackAction = CombatPlayerInputData->LightAttackAction;
 	if (CombatPlayerInputData->HeavyAttackAction.IsValid())			HeavyAttackAction = CombatPlayerInputData->HeavyAttackAction;

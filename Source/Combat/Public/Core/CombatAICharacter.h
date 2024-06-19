@@ -40,7 +40,7 @@ protected:
 public:
 	virtual FHitResult GetHitResultFromLookAtRotation() override;
 
-	/*Returns true if Current phase has not reached last phase, false otherwise*/
+	/*Returns true if Current phase is not the last phase, false otherwise*/
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "+Combat|AICharacter")
 	bool TransitionToNextPhase();
 
@@ -51,7 +51,7 @@ public:
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|AICharacter")
-	UBehaviorTree* BehaviourTree;
+	UBehaviorTree* BehaviourTree = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "+Combat|AICharacter")
 	TEnumAsByte<ECombat_Phase> CurrentPhase;

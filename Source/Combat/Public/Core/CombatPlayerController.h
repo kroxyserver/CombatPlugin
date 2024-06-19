@@ -17,6 +17,9 @@ class UInputAction;
 class UInputMappingContext;
 
 DECLARE_DYNAMIC_DELEGATE(FOnEvade);
+DECLARE_DYNAMIC_DELEGATE(FOnSprint_Start);
+DECLARE_DYNAMIC_DELEGATE(FOnSprint_Hold);
+DECLARE_DYNAMIC_DELEGATE(FOnSprint_Stop);
 DECLARE_DYNAMIC_DELEGATE(FOnBlock_Start);
 DECLARE_DYNAMIC_DELEGATE(FOnBlock_Hold);
 DECLARE_DYNAMIC_DELEGATE(FOnBlock_Stop);
@@ -56,7 +59,13 @@ protected:
 	virtual void Look(const FInputActionValue& Value);
 
 	virtual void Evade(const FInputActionValue& Value);
-	
+
+	virtual void Sprint_Start(const FInputActionValue& Value);
+
+	virtual void Sprint_Hold(const FInputActionValue& Value);
+
+	virtual void Sprint_Stop(const FInputActionValue& Value);
+
 	virtual void Block_Start(const FInputActionValue& Value);
 
 	virtual void Block_Hold(const FInputActionValue& Value);
@@ -131,6 +140,9 @@ public:
 	UInputAction* EvadeAction;
 
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Input")
+	FCombat_InputActionAndType SprintAction;
+
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Input")
 	FCombat_InputActionAndType BlockAction;
 
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Input")
@@ -150,6 +162,15 @@ public:
 	/* Delegates */
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Delegates|Evade")
 	FOnEvade OnEvade;
+
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Delegates|Sprint")
+	FOnSprint_Start OnSprint_Start;
+
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Delegates|Sprint")
+	FOnSprint_Hold OnSprint_Hold;
+
+	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Delegates|Sprint")
+	FOnSprint_Stop OnSprint_Stop;
 
 	UPROPERTY(BlueprintReadOnly, Category = "+Combat|PlayerController|Delegates|Block")
 	FOnBlock_Start OnBlock_Start;
