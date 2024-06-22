@@ -9,7 +9,7 @@
 class UBehaviorTree;
 
 UENUM(BlueprintType)
-enum ECombat_Phase : uint8
+enum class ECombat_Phase : uint8
 {
 	PhaseOne		UMETA(DisplayName = "PhaseOne"),
 	PhaseTwo		UMETA(DisplayName = "PhaseTwo"),
@@ -54,10 +54,10 @@ public:
 	UBehaviorTree* BehaviourTree = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "+Combat|AICharacter")
-	TEnumAsByte<ECombat_Phase> CurrentPhase;
+	ECombat_Phase CurrentPhase;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|AICharacter")
-	TEnumAsByte<ECombat_Phase> LastPhase;
+	ECombat_Phase LastPhase;
 
 #pragma endregion
 };

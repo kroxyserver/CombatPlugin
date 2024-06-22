@@ -17,7 +17,7 @@ class COMBAT_API UCombatSubsystem : public UGameInstanceSubsystem
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "+Combat|Subsystem")
-	void SpawnProjectile(ACombatCharacter* CombatCharacter, TSubclassOf<AActor> ProjectileClass, TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType);
+	void SpawnProjectile(ACombatCharacter* CombatCharacter, TSubclassOf<AActor> ProjectileClass, ECombat_AttackType AttackType, ECombat_ProjectileSpawnPointType HandType);
 
 #pragma endregion
 

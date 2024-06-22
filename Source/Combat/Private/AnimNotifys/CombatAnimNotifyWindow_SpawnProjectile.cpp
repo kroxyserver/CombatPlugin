@@ -25,20 +25,20 @@ void UCombatAnimNotifyWindow_SpawnProjectile::PostEditChangeProperty(FPropertyCh
 
 	switch (AttackType)
 	{
-		case None:
+		case ECombat_AttackType::None:
 			NotifyName = "Specify Attack Type";
 			break;
-		case LightAttack:
-			NotifyName = (HandType == Default) ? "Spawn Projectile Light Attack" : (HandType == Left) ? "Spawn Projectile Light Attack Left" : "Spawn Projectile Light Attack Right";
+		case ECombat_AttackType::LightAttack:
+			NotifyName = (HandType == ECombat_ProjectileSpawnPointType::Default) ? "Spawn Projectile Light Attack" : (HandType == ECombat_ProjectileSpawnPointType::Left) ? "Spawn Projectile Light Attack Left" : "Spawn Projectile Light Attack Right";
 			break;
-		case HeavyAttack:
-			NotifyName = (HandType == Default) ? "Spawn Projectile Heavy Attack" : (HandType == Left) ? "Spawn Projectile Heavy Attack Left" : "Spawn Projectile Heavy Attack Right";
+		case ECombat_AttackType::HeavyAttack:
+			NotifyName = (HandType == ECombat_ProjectileSpawnPointType::Default) ? "Spawn Projectile Heavy Attack" : (HandType == ECombat_ProjectileSpawnPointType::Left) ? "Spawn Projectile Heavy Attack Left" : "Spawn Projectile Heavy Attack Right";
 			break;
-		case Ability:
-			NotifyName = (HandType == Default) ? "Spawn Projectile Ability" : (HandType == Left) ? "Spawn Projectile Ability Left" : "Spawn Projectile Ability Right";
+		case ECombat_AttackType::Ability:
+			NotifyName = (HandType == ECombat_ProjectileSpawnPointType::Default) ? "Spawn Projectile Ability" : (HandType == ECombat_ProjectileSpawnPointType::Left) ? "Spawn Projectile Ability Left" : "Spawn Projectile Ability Right";
 			break;
-		case UltimateAbility:
-			NotifyName = (HandType == Default) ? "Spawn Projectile Ultimate Ability" : (HandType == Left) ? "Spawn Projectile Ultimate Ability Left" : "Spawn Projectile Ultimate Ability Right";
+		case ECombat_AttackType::UltimateAbility:
+			NotifyName = (HandType == ECombat_ProjectileSpawnPointType::Default) ? "Spawn Projectile Ultimate Ability" : (HandType == ECombat_ProjectileSpawnPointType::Left) ? "Spawn Projectile Ultimate Ability Left" : "Spawn Projectile Ultimate Ability Right";
 			break;
 		default:
 			break;

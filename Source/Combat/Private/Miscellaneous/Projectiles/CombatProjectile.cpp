@@ -11,7 +11,7 @@
 ACombatProjectile::ACombatProjectile()
 {
 	// Default Variables
-	ProjectileType = Linear;
+	ProjectileType = ECombat_ProjectileType::Linear;
 	InitialProjectileSpeed = 3000.f;
 	MaxProjectileSpeed = 3000.f;
 	ProjectileSpeed = 3000.f;

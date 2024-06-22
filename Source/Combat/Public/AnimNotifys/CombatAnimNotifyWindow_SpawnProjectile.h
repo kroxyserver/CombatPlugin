@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 
 #include "Components/CombatComponent.h"
+#include "Core/CombatCharacter.h"
 
 #include "AnimNotifies/AnimNotify_PlayMontageNotify.h"
 #include "CombatAnimNotifyWindow_SpawnProjectile.generated.h"
 
-class ACombatCharacter;
 class UCombatSubsystem;
 
 UCLASS()
@@ -51,10 +51,10 @@ public:
 	TSubclassOf<AActor> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "+Combat")
-	TEnumAsByte<ECombat_AttackType> AttackType;
+	ECombat_AttackType AttackType;
 
 	UPROPERTY(EditAnywhere, Category = "+Combat")
-	TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType;
+	ECombat_ProjectileSpawnPointType HandType;
 
 	UPROPERTY(EditAnywhere, Category = "+Combat")
 	float DelayBetweenProjectileSpawns;

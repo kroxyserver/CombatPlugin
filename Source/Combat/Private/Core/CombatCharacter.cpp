@@ -130,23 +130,23 @@ void ACombatCharacter::UpdateCharacterData(UCombatCharacterData* NewCharacterDat
 	CombatComponent->CharacterData = NewCharacterData;
 }
 
-USceneComponent* ACombatCharacter::GetProjectileSpawnPoint(TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType)
+USceneComponent* ACombatCharacter::GetProjectileSpawnPoint(ECombat_AttackType AttackType, ECombat_ProjectileSpawnPointType HandType)
 {
 	switch (AttackType)
 	{
-		case None:
+		case ECombat_AttackType::None:
 			break;
-		case LightAttack:
-			return (HandType == Default) ? ProjectileSpawnPoint_LightAttack : (HandType == Left) ? ProjectileSpawnPoint_LightAttack_Left : ProjectileSpawnPoint_LightAttack_Right;
+		case ECombat_AttackType::LightAttack:
+			return (HandType == ECombat_ProjectileSpawnPointType::Default) ? ProjectileSpawnPoint_LightAttack : (HandType == ECombat_ProjectileSpawnPointType::Left) ? ProjectileSpawnPoint_LightAttack_Left : ProjectileSpawnPoint_LightAttack_Right;
 			break;
-		case HeavyAttack:
-			return (HandType == Default) ? ProjectileSpawnPoint_HeavyAttack : (HandType == Left) ? ProjectileSpawnPoint_HeavyAttack_Left : ProjectileSpawnPoint_HeavyAttack_Right;
+		case ECombat_AttackType::HeavyAttack:
+			return (HandType == ECombat_ProjectileSpawnPointType::Default) ? ProjectileSpawnPoint_HeavyAttack : (HandType == ECombat_ProjectileSpawnPointType::Left) ? ProjectileSpawnPoint_HeavyAttack_Left : ProjectileSpawnPoint_HeavyAttack_Right;
 			break;
-		case Ability:
-			return (HandType == Default) ? ProjectileSpawnPoint_Ability : (HandType == Left) ? ProjectileSpawnPoint_Ability_Left : ProjectileSpawnPoint_Ability_Right;
+		case ECombat_AttackType::Ability:
+			return (HandType == ECombat_ProjectileSpawnPointType::Default) ? ProjectileSpawnPoint_Ability : (HandType == ECombat_ProjectileSpawnPointType::Left) ? ProjectileSpawnPoint_Ability_Left : ProjectileSpawnPoint_Ability_Right;
 			break;
-		case UltimateAbility:
-			return (HandType == Default) ? ProjectileSpawnPoint_UltimateAbility : (HandType == Left) ? ProjectileSpawnPoint_UltimateAbility_Left : ProjectileSpawnPoint_UltimateAbility_Right;
+		case ECombat_AttackType::UltimateAbility:
+			return (HandType == ECombat_ProjectileSpawnPointType::Default) ? ProjectileSpawnPoint_UltimateAbility : (HandType == ECombat_ProjectileSpawnPointType::Left) ? ProjectileSpawnPoint_UltimateAbility_Left : ProjectileSpawnPoint_UltimateAbility_Right;
 			break;
 		default:
 			break;

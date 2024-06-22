@@ -33,7 +33,7 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, Category = "+Combat")
-	TEnumAsByte<ECombat_AttackType> AttackType;
+	ECombat_AttackType AttackType;
 
 #pragma endregion
 };

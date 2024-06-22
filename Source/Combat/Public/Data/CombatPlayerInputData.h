@@ -10,7 +10,7 @@ class UInputAction;
 class UInputMappingContext;
 
 UENUM(BlueprintType)
-enum ECombat_InputType : uint8
+enum class ECombat_InputType : uint8
 {
 	Press				UMETA(DisplayName = "Press"),
 	Hold				UMETA(DisplayName = "Hold"),
@@ -30,7 +30,7 @@ struct FCombat_InputActionAndType
 	UInputAction* InputAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TEnumAsByte<ECombat_InputType> InputType;
+	ECombat_InputType InputType;
 
 	bool IsValid() const { return InputAction != nullptr; }
 };

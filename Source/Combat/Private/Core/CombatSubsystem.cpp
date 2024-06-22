@@ -11,7 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
-void UCombatSubsystem::SpawnProjectile(ACombatCharacter* CombatCharacter, TSubclassOf<AActor> ProjectileClass, TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType)
+void UCombatSubsystem::SpawnProjectile(ACombatCharacter* CombatCharacter, TSubclassOf<AActor> ProjectileClass, ECombat_AttackType AttackType, ECombat_ProjectileSpawnPointType HandType)
 {
 	FTransform SpawnTransform = FTransform();
 	ACombatProjectile_Homing* HomingProjectile;
@@ -36,38 +36,38 @@ void UCombatSubsystem::SpawnProjectile(ACombatCharacter* CombatCharacter, TSubcl
 
 		switch (Projectile->ProjectileType)
 		{
-		case Linear:
-			SpawnTransform.SetRotation(FQuat(UKismetMathLibrary::FindLookAtRotation(SpawnTransform.GetLocation(), HitResult.Location)));
-			break;
+			case ECombat_ProjectileType::Linear:
+				SpawnTransform.SetRotation(FQuat(UKismetMathLibrary::FindLookAtRotation(SpawnTransform.GetLocation(), HitResult.Location)));
+				break;
 
-		case Homing:
-			HomingProjectile = Cast<ACombatProjectile_Homing>(Projectile);
-			if (HomingProjectile)
-			{
-				HomingProjectile->HomingTarget = HitResult.GetActor();
-			}
-			break;
+			case ECombat_ProjectileType::Homing:
+				HomingProjectile = Cast<ACombatProjectile_Homing>(Projectile);
+				if (HomingProjectile)
+				{
+					HomingProjectile->HomingTarget = HitResult.GetActor();
+				}
+				break;
 
-		case Arc:
-			ArcProjectile = Cast<ACombatProjectile_Arc>(Projectile);
-			if (ArcProjectile)
-			{
-				FVector LaunchVelocity;
-				UGameplayStatics::SuggestProjectileVelocity_CustomArc(
-					CombatCharacter,
-					LaunchVelocity,
-					ProjectileSpawnPoint->GetComponentLocation(),
-					HitResult.Location,
-					0.f,
-					ArcProjectile->ArcParam
-				);
+			case ECombat_ProjectileType::Arc:
+				ArcProjectile = Cast<ACombatProjectile_Arc>(Projectile);
+				if (ArcProjectile)
+				{
+					FVector LaunchVelocity;
+					UGameplayStatics::SuggestProjectileVelocity_CustomArc(
+						CombatCharacter,
+						LaunchVelocity,
+						ProjectileSpawnPoint->GetComponentLocation(),
+						HitResult.Location,
+						0.f,
+						ArcProjectile->ArcParam
+					);
 
-				ArcProjectile->LaunchVelocity = LaunchVelocity;
-			}
-			break;
+					ArcProjectile->LaunchVelocity = LaunchVelocity;
+				}
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 
 		UGameplayStatics::FinishSpawningActor(Projectile, SpawnTransform);

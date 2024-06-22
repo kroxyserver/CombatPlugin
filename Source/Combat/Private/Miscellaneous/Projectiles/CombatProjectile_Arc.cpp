@@ -8,7 +8,7 @@
 ACombatProjectile_Arc::ACombatProjectile_Arc()
 {
 	// Default variables
-	ProjectileType = Arc;
+	ProjectileType = ECombat_ProjectileType::Arc;
 
 	GetProjectileMovementComponent()->bRotationRemainsVertical = true;
 	GetProjectileMovementComponent()->ProjectileGravityScale = 1.f;

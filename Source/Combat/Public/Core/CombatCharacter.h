@@ -12,7 +12,7 @@
 class UCombatCharacterData;
 
 UENUM(BlueprintType)
-enum ECombat_ProjectileSpawnPointType : uint8
+enum class ECombat_ProjectileSpawnPointType : uint8
 {
 	Default		UMETA(DisplayName = "Default"),
 	Left		UMETA(DisplayName = "Left"),
@@ -93,7 +93,7 @@ public:
 	virtual void UpdateCharacterData(UCombatCharacterData* NewCharacterData);
 	
 	UFUNCTION(BlueprintCallable, Category = "+Combat|Character")
-	USceneComponent* GetProjectileSpawnPoint(TEnumAsByte<ECombat_AttackType> AttackType, TEnumAsByte<ECombat_ProjectileSpawnPointType> HandType);
+	USceneComponent* GetProjectileSpawnPoint(ECombat_AttackType AttackType, ECombat_ProjectileSpawnPointType HandType);
 
 	UFUNCTION(BlueprintCallable, Category = "+Combat|Character")
 	virtual FHitResult GetHitResultFromLookAtRotation();

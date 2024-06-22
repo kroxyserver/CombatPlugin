@@ -7,7 +7,7 @@
 ACombatProjectile_Linear::ACombatProjectile_Linear()
 {
 	// Default Variables
-	ProjectileType = Linear;
+	ProjectileType = ECombat_ProjectileType::Linear;
 }
 
 #if WITH_EDITOR

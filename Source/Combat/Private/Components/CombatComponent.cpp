@@ -380,22 +380,22 @@ ECombat_AttackType UCombatComponent::GetRandomAttackType(float LightAttackProbab
 
 	// Checking for LightAttack
 	CumulativeProbability += LightAttackProbability;
-	if (Random <= CumulativeProbability) return LightAttack;
+	if (Random <= CumulativeProbability) return ECombat_AttackType::LightAttack;
 
 	// Checking for HeavyAttack
 	CumulativeProbability += HeavyAttackProbability;
-	if (Random <= CumulativeProbability) return HeavyAttack;
+	if (Random <= CumulativeProbability) return ECombat_AttackType::HeavyAttack;
 
 	// Checking for Ability
 	CumulativeProbability += AbilityProbability;
-	if (Random <= CumulativeProbability) return Ability;
+	if (Random <= CumulativeProbability) return ECombat_AttackType::Ability;
 
 	// Checking for UltimateAbility
 	CumulativeProbability += UltimateAbilityProbability;
-	if (Random <= CumulativeProbability) return UltimateAbility;
+	if (Random <= CumulativeProbability) return ECombat_AttackType::UltimateAbility;
 
 	// Default to LightAttack if no suitable attack type was found
-	return LightAttack;
+	return ECombat_AttackType::LightAttack;
 }
 
 void UCombatComponent::RotateTowardsControllerRotation()

@@ -2,6 +2,9 @@
 
 #include "Data/CombatPlayerInputData.h"
 
+#include "EnhancedInput/Public/InputMappingContext.h"
+#include "EnhancedInput/Public/InputAction.h"
+
 UCombatPlayerInputData::UCombatPlayerInputData()
 {
 	/*Default values*/

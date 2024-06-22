@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayAbilityAnimation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayUltimateAbilityAnimation);
 
 UENUM(BlueprintType)
-enum ECombat_AttackType : uint8
+enum class ECombat_AttackType : uint8
 {
 	None				UMETA(DisplayName = "NONE"),
 	LightAttack			UMETA(DisplayName = "LightAttack"),

@@ -56,28 +56,28 @@ void ACombatPlayerController::SetupInputComponent()
 		// Sprinting
 		switch (SprintAction.InputType)
 		{
-			case Press:
+			case ECombat_InputType::Press:
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
 				break;
-			case Hold:
+			case ECombat_InputType::Hold:
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Hold);
 				break;
-			case Release:
+			case ECombat_InputType::Release:
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
 				break;
-			case PressAndHold:
+			case ECombat_InputType::PressAndHold:
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Hold);
 				break;
-			case PressAndRelease:
+			case ECombat_InputType::PressAndRelease:
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
 				break;
-			case HoldAndRelease:
+			case ECombat_InputType::HoldAndRelease:
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Hold);
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
 				break;
-			case PressHoldRelease:
+			case ECombat_InputType::PressHoldRelease:
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Sprint_Start);
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Hold);
 				EnhancedInputComponent->BindAction(SprintAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Sprint_Stop);
@@ -89,28 +89,28 @@ void ACombatPlayerController::SetupInputComponent()
 		// Blocking
 		switch (BlockAction.InputType)
 		{
-			case Press:
+			case ECombat_InputType::Press:
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Block_Start);
 				break;
-			case Hold:
+			case ECombat_InputType::Hold:
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Block_Hold);
 				break;
-			case Release:
+			case ECombat_InputType::Release:
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Block_Stop);
 				break;
-			case PressAndHold:
+			case ECombat_InputType::PressAndHold:
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Block_Start);
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Block_Hold);
 				break;
-			case PressAndRelease:
+			case ECombat_InputType::PressAndRelease:
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Block_Start);
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Block_Stop);
 				break;
-			case HoldAndRelease:
+			case ECombat_InputType::HoldAndRelease:
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Block_Hold);
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Block_Stop);
 				break;
-			case PressHoldRelease:
+			case ECombat_InputType::PressHoldRelease:
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Block_Start);
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Block_Hold);
 				EnhancedInputComponent->BindAction(BlockAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Block_Stop);
@@ -122,28 +122,28 @@ void ACombatPlayerController::SetupInputComponent()
 		// Light Attack
 		switch (LightAttackAction.InputType)
 		{
-			case Press:
+			case ECombat_InputType::Press:
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::LightAttack_Start);
 				break;
-			case Hold:
+			case ECombat_InputType::Hold:
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::LightAttack_Hold);
 				break;
-			case Release:
+			case ECombat_InputType::Release:
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::LightAttack_Stop);
 				break;
-			case PressAndHold:
+			case ECombat_InputType::PressAndHold:
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::LightAttack_Start);
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::LightAttack_Hold);
 				break;
-			case PressAndRelease:
+			case ECombat_InputType::PressAndRelease:
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::LightAttack_Start);
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::LightAttack_Stop);
 				break;
-			case HoldAndRelease:
+			case ECombat_InputType::HoldAndRelease:
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::LightAttack_Hold);
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::LightAttack_Stop);
 				break;
-			case PressHoldRelease:
+			case ECombat_InputType::PressHoldRelease:
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::LightAttack_Start);
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::LightAttack_Hold);
 				EnhancedInputComponent->BindAction(LightAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::LightAttack_Stop);
@@ -155,28 +155,28 @@ void ACombatPlayerController::SetupInputComponent()
 		// Heavy Attack
 		switch (HeavyAttackAction.InputType)
 		{
-			case Press:
+			case ECombat_InputType::Press:
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::HeavyAttack_Start);
 				break;
-			case Hold:
+			case ECombat_InputType::Hold:
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::HeavyAttack_Hold);
 				break;
-			case Release:
+			case ECombat_InputType::Release:
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::HeavyAttack_Stop);
 				break;
-			case PressAndHold:
+			case ECombat_InputType::PressAndHold:
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::HeavyAttack_Start);
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::HeavyAttack_Hold);
 				break;
-			case PressAndRelease:
+			case ECombat_InputType::PressAndRelease:
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::HeavyAttack_Start);
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::HeavyAttack_Stop);
 				break;
-			case HoldAndRelease:
+			case ECombat_InputType::HoldAndRelease:
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::HeavyAttack_Hold);
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::HeavyAttack_Stop);
 				break;
-			case PressHoldRelease:
+			case ECombat_InputType::PressHoldRelease:
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::HeavyAttack_Start);
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::HeavyAttack_Hold);
 				EnhancedInputComponent->BindAction(HeavyAttackAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::HeavyAttack_Stop);
@@ -188,28 +188,28 @@ void ACombatPlayerController::SetupInputComponent()
 		// Ability
 		switch (AbilityAction.InputType)
 		{
-			case Press:
+			case ECombat_InputType::Press:
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Ability_Start);
 				break;
-			case Hold:
+			case ECombat_InputType::Hold:
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Ability_Hold);
 				break;
-			case Release:
+			case ECombat_InputType::Release:
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Ability_Stop);
 				break;
-			case PressAndHold:
+			case ECombat_InputType::PressAndHold:
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Ability_Start);
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Ability_Hold);
 				break;
-			case PressAndRelease:
+			case ECombat_InputType::PressAndRelease:
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Ability_Start);
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Ability_Stop);
 				break;
-			case HoldAndRelease:
+			case ECombat_InputType::HoldAndRelease:
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Ability_Hold);
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Ability_Stop);
 				break;
-			case PressHoldRelease:
+			case ECombat_InputType::PressHoldRelease:
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::Ability_Start);
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Ability_Hold);
 				EnhancedInputComponent->BindAction(AbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::Ability_Stop);
@@ -221,28 +221,28 @@ void ACombatPlayerController::SetupInputComponent()
 		// Ultimate Ability
 		switch (UltimateAbilityAction.InputType)
 		{
-			case Press:
+			case ECombat_InputType::Press:
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::UltimateAbility_Start);
 				break;
-			case Hold:
+			case ECombat_InputType::Hold:
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::UltimateAbility_Hold);
 				break;
-			case Release:
+			case ECombat_InputType::Release:
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::UltimateAbility_Stop);
 				break;
-			case PressAndHold:
+			case ECombat_InputType::PressAndHold:
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::UltimateAbility_Start);
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::UltimateAbility_Hold);
 				break;
-			case PressAndRelease:
+			case ECombat_InputType::PressAndRelease:
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::UltimateAbility_Start);
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::UltimateAbility_Stop);
 				break;
-			case HoldAndRelease:
+			case ECombat_InputType::HoldAndRelease:
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::UltimateAbility_Hold);
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::UltimateAbility_Stop);
 				break;
-			case PressHoldRelease:
+			case ECombat_InputType::PressHoldRelease:
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Started, this, &ACombatPlayerController::UltimateAbility_Start);
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::UltimateAbility_Hold);
 				EnhancedInputComponent->BindAction(UltimateAbilityAction.InputAction, ETriggerEvent::Completed, this, &ACombatPlayerController::UltimateAbility_Stop);

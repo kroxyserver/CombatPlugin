@@ -12,7 +12,7 @@ class UProjectileMovementComponent;
 class USphereComponent;
 
 UENUM(BlueprintType)
-enum ECombat_ProjectileType : uint8
+enum class ECombat_ProjectileType : uint8
 {
 	Linear			UMETA(DisplayName = "Linear"),
 	Homing			UMETA(DisplayName = "Homing"),
@@ -69,7 +69,7 @@ public:
 
 public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Projectile")
-	TEnumAsByte<ECombat_ProjectileType> ProjectileType;
+	ECombat_ProjectileType ProjectileType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "+Combat|Projectile")
 	float InitialProjectileSpeed;

@@ -10,8 +10,8 @@ ACombatAICharacter::ACombatAICharacter()
 {
 	// Default variables
 	AIControllerClass = ACombatAIController::StaticClass();
-	CurrentPhase = PhaseOne;
-	LastPhase = PhaseOne;
+	CurrentPhase = ECombat_Phase::PhaseOne;
+	LastPhase = ECombat_Phase::PhaseOne;
 
 	// Character Movement
 	GetCharacterMovement()->bRequestedMoveUseAcceleration = true;

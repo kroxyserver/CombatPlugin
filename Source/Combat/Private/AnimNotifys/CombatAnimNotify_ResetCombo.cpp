@@ -17,17 +17,17 @@ void UCombatAnimNotify_ResetCombo::PostEditChangeProperty(FPropertyChangedEvent&
 
 	switch (AttackType)
 	{
-	case ECombat_AttackType::None:
-		NotifyName = "SpecifyAttackType...";
-		break;
-	case ECombat_AttackType::LightAttack:
-		NotifyName = "ResetLightAttackCombo";
-		break;
-	case ECombat_AttackType::HeavyAttack:
-		NotifyName = "ResetHeavyAttackCombo";
-		break;
-	default:
-		break;
+		case ECombat_AttackType::None:
+			NotifyName = "SpecifyAttackType...";
+			break;
+		case ECombat_AttackType::LightAttack:
+			NotifyName = "ResetLightAttackCombo";
+			break;
+		case ECombat_AttackType::HeavyAttack:
+			NotifyName = "ResetHeavyAttackCombo";
+			break;
+		default:
+			break;
 	}
 }
 #endif

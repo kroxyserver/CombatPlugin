@@ -7,7 +7,7 @@
 ACombatProjectile_Homing::ACombatProjectile_Homing()
 {
 	// Default variables
-	ProjectileType = Homing;
+	ProjectileType = ECombat_ProjectileType::Homing;
 	HomingAccelerationMagnitude = 1000.f;
 
 	// Projectile Movement Component
